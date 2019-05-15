@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.humu.ct.MainActivity">
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="count60"
+        android:text="60s"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_60"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        tools:text="TextView"/>
+
+    <Button
+        android:id="@+id/btn_pause_60"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="8dp"
+        android:onClick="pause60"
+        android:text="暂停60s倒计时"
+        android:textAllCaps="false"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/tv_60"/>
+
+    <Button
+        android:id="@+id/btn_restart60"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="8dp"
+        android:onClick="resume60"
+        android:text="继续60s倒计时"
+        android:textAllCaps="false"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/btn_pause_60"
+        app:layout_constraintTop_toBottomOf="@+id/btn_pause_60"/>
+
+    <Button
+        android:id="@+id/btn_stop60"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="停止60s倒计时"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/btn_restart60"
+        app:layout_constraintStart_toStartOf="@+id/btn_restart60"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:onClick="stop60"
+        android:visibility="visible"/>
+
+    <Button
+        android:id="@+id/button9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="30s"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="8dp"
+        android:onClick="count30"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"/>
+
+    <TextView
+        android:id="@+id/tv_30"
+        android:layout_width="59dp"
+        android:layout_height="16dp"
+        tools:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/button9"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/button9"
+        android:layout_marginRight="8dp"/>
+
+    <Button
+        android:id="@+id/button10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="暂停30s倒计时"
+        android:textAllCaps="false"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_30"
+        app:layout_constraintEnd_toEndOf="@+id/tv_30"
+        android:layout_marginEnd="0dp"
+        android:onClick="pause30"
+        android:layout_marginRight="0dp"/>
+
+    <Button
+        android:id="@+id/button11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="继续30s倒计时"
+        android:textAllCaps="false"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/button10"
+        app:layout_constraintEnd_toEndOf="@+id/button10"
+        android:layout_marginEnd="0dp"
+        android:onClick="resume30"
+        android:layout_marginRight="0dp"/>
+
+    <Button
+        android:id="@+id/button12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="停止30s倒计时"
+        app:layout_constraintEnd_toEndOf="@+id/button11"
+        android:layout_marginEnd="0dp"
+        android:layout_marginTop="8dp"
+        android:onClick="stop30"
+        app:layout_constraintTop_toBottomOf="@+id/button11"
+        android:layout_marginRight="0dp"/>
+
+    <Button
+        android:id="@+id/button13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="停止所有倒计时"
+        android:onClick="stopAll"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/btn_stop60"/>
+
+</android.support.constraint.ConstraintLayout>
