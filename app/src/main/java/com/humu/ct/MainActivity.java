@@ -25,9 +25,54 @@ public class MainActivity extends AppCompatActivity {
 
         tv_60 = (TextView) findViewById(R.id.tv_60);
         tv_30 = (TextView) findViewById(R.id.tv_30);
+
     }
 
     public void count60(View view) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                CTimer.start(COUNT_60, 60, new CTimer.CTimerListener() {
+                    @Override
+                    public void onCountDownStart(int tag) {
+                        tv_60.setText("开始倒计时");
+                        Log.d(TAG, "====onCountDownStart====" + tag);
+                    }
+
+                    @Override
+                    public void onCount(int tag, int timeNow) {
+                        tv_60.setText(timeNow + "");
+                        Log.d(TAG, "====onCount====" + tag + " " + timeNow);
+                    }
+
+                    @Override
+                    public void onCountPause(int tag, int timeNow) {
+                        Log.d(TAG, "====onCountPause====" + tag + " " + timeNow);
+                    }
+
+                    @Override
+                    public void onCountRestart(int tag) {
+                        Log.d(TAG, "====restartCount====" + tag);
+                    }
+
+                    @Override
+                    public void onCountOver(int tag) {
+                        tv_60.setText("倒计时结束");
+                        Log.d(TAG, "====onCountOver====" + tag);
+                    }
+
+                    @Override
+                    public void onStop(int tag) {
+                        tv_60.setText("倒计时手动结束");
+                        Log.d(TAG, "====onCountOver====" + tag);
+                    }
+                });
+
+            }
+        }).start();
+
+/*
         CTimer.start(COUNT_60, 60, new CTimer.CTimerListener() {
             @Override
             public void onCountDownStart(int tag) {
@@ -63,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG,"====onCountOver===="+tag);
             }
         });
+*/
     }
 
     public void pause60(View view) {
@@ -82,35 +128,35 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCountDownStart(int tag) {
                 tv_30.setText("开始倒计时");
-                Log.d(TAG,"====onCountDownStart===="+tag);
+                Log.d(TAG, "====onCountDownStart====" + tag);
             }
 
             @Override
             public void onCount(int tag, int timeNow) {
-                tv_30.setText(timeNow+"");
-                Log.d(TAG,"====onCount===="+tag+" "+timeNow);
+                tv_30.setText(timeNow + "");
+                Log.d(TAG, "====onCount====" + tag + " " + timeNow);
             }
 
             @Override
             public void onCountPause(int tag, int timeNow) {
-                Log.d(TAG,"====onCountPause===="+tag+" "+timeNow);
+                Log.d(TAG, "====onCountPause====" + tag + " " + timeNow);
             }
 
             @Override
             public void onCountRestart(int tag) {
-                Log.d(TAG,"====restartCount===="+tag);
+                Log.d(TAG, "====restartCount====" + tag);
             }
 
             @Override
             public void onCountOver(int tag) {
                 tv_30.setText("倒计时结束");
-                Log.d(TAG,"====onCountOver===="+tag);
+                Log.d(TAG, "====onCountOver====" + tag);
             }
 
             @Override
             public void onStop(int tag) {
                 tv_30.setText("倒计时手动结束");
-                Log.d(TAG,"====onCountOver===="+tag);
+                Log.d(TAG, "====onCountOver====" + tag);
             }
         });
     }
