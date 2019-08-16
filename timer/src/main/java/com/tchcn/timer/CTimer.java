@@ -187,7 +187,6 @@ public class CTimer {
         @Override
         public synchronized void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Log.d("CTimer","====="+Thread.currentThread().getName());
             final int what = msg.what;
             if (listenerMap.containsKey(what)) {
                 final CTimerListener cTimerListener = listenerMap.get(what);
