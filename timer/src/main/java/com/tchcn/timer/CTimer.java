@@ -1,8 +1,8 @@
 package com.tchcn.timer;
 
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,16 +23,7 @@ public class CTimer {
     private static final Map<Integer, CTimerListener> listenerMap = new ConcurrentHashMap<>();
     private static final List<Integer> pauseList = Collections.synchronizedList(new ArrayList<Integer>()); //正在暂停的倒计时
 
-    private static Handler mainHandler = new Handler(Looper.getMainLooper());
-
     private CTimer() {
-    }
-
-    private static boolean isMainLooper() {
-        if (Looper.myLooper() == Looper.getMainLooper()) {
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -51,27 +42,9 @@ public class CTimer {
             final Message message = handler.obtainMessage(tag);
             if (totalTime > 0) {
                 if (cTimerListener != null) {
-                    if (isMainLooper()) {
-                        cTimerListener.onCountDownStart(tag);
-                    } else {
-                        mainHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                cTimerListener.onCountDownStart(tag);
-                            }
-                        });
-                    }
+                    cTimerListener.onCountDownStart(tag);
                 }
-                if (isMainLooper()) {
-                    handler.sendMessage(message);
-                } else {
-                    mainHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            handler.sendMessage(message);
-                        }
-                    });
-                }
+                handler.sendMessage(message);
                 synchronized (timerMap) {
                     timerMap.put(tag, totalTime);
                 }
@@ -99,27 +72,9 @@ public class CTimer {
             final Message message = handler.obtainMessage(tag);
             if (totalTime > 0) {
                 if (cTimerListener != null) {
-                    if (isMainLooper()) {
-                        cTimerListener.onCountDownStart(tag);
-                    } else {
-                        mainHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                cTimerListener.onCountDownStart(tag);
-                            }
-                        });
-                    }
+                    cTimerListener.onCountDownStart(tag);
                 }
-                if (isMainLooper()) {
-                    handler.sendMessage(message);
-                } else {
-                    mainHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            handler.sendMessage(message);
-                        }
-                    });
-                }
+                handler.sendMessage(message);
                 synchronized (timerMap) {
                     timerMap.put(tag, totalTime);
                 }
@@ -166,20 +121,11 @@ public class CTimer {
         if (listenerMap.containsKey(tag)) {
             final CTimerListener cTimerListener = listenerMap.get(tag);
             if (cTimerListener != null) {
-                if (isMainLooper()) {
-                    cTimerListener.onCountRestart(tag);
-                } else {
-                    mainHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            cTimerListener.onCountRestart(tag);
-                        }
-                    });
-                }
+                cTimerListener.onCountRestart(tag);
             }
         }
-        TimerHandler handler = TimerHandler.getInstance();
-        Message message = handler.obtainMessage(tag);
+        final TimerHandler handler = TimerHandler.getInstance();
+        final Message message = handler.obtainMessage(tag);
         handler.sendMessage(message);
     }
 
@@ -194,19 +140,10 @@ public class CTimer {
             if (listenerMap.containsKey(tag)) {
                 final CTimerListener cTimerListener = listenerMap.get(tag);
                 if (cTimerListener != null) {
-                    if (isMainLooper()) {
-                        cTimerListener.onStop(tag);
-                    } else {
-                        mainHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                cTimerListener.onStop(tag);
-                            }
-                        });
-                    }
+                    cTimerListener.onStop(tag);
                 }
             }
-            TimerHandler handler = handlerMap.get(tag);
+            final TimerHandler handler = handlerMap.get(tag);
             if (handler != null && handler.hasMessages(tag)) {
                 handler.removeMessages(tag);
             }
@@ -250,6 +187,7 @@ public class CTimer {
         @Override
         public synchronized void handleMessage(Message msg) {
             super.handleMessage(msg);
+            Log.d("CTimer","====="+Thread.currentThread().getName());
             final int what = msg.what;
             if (listenerMap.containsKey(what)) {
                 final CTimerListener cTimerListener = listenerMap.get(what);
@@ -258,51 +196,21 @@ public class CTimer {
                         Integer time = timerMap.get(what);
                         if (time <= 0) {
                             removeTag(what);
-                            if (isMainLooper()) {
-                                cTimerListener.onCountOver(what);
-                            } else {
-                                mainHandler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        cTimerListener.onCountOver(what);
-                                    }
-                                });
-                            }
+                            cTimerListener.onCountOver(what);
                         } else {
                             if (!pauseList.contains(what)) {
-                                if (isMainLooper()) {
-                                    cTimerListener.onCount(what, time);
-                                } else {
-                                    final Integer finalTime = time;
-                                    mainHandler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            cTimerListener.onCount(what, finalTime);
-                                        }
-                                    });
-                                }
+                                cTimerListener.onCount(what, time);
                                 time--;
                                 timerMap.put(what, time);
-                                Message message = obtainMessage(what);
+                                final Message message = obtainMessage(what);
                                 int intervalTime = 1;
                                 if (intervalMap.containsKey(what)) {
                                     intervalTime = intervalMap.get(what);
                                 }
                                 sendMessageDelayed(message, intervalTime * 1000);
                             } else {
-                                if (isMainLooper()) {
-                                    cTimerListener.onCount(what, time);
-                                    cTimerListener.onCountPause(what, time);
-                                } else {
-                                    final Integer finalTime1 = time;
-                                    mainHandler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            cTimerListener.onCount(what, finalTime1);
-                                            cTimerListener.onCountPause(what, finalTime1);
-                                        }
-                                    });
-                                }
+                                cTimerListener.onCount(what, time);
+                                cTimerListener.onCountPause(what, time);
                                 time--;
                                 timerMap.put(what, time);
                             }
